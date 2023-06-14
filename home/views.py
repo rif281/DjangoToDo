@@ -13,7 +13,7 @@ def add_task(request):
     if request.method == 'POST':
         title = request.POST['title']
         desc = request.POST['desc']
-        task = Task(task_title=title, task_description=desc)
+        task = Task(task_title=title, task_description=desc, status=False)
         task.save()
         context['success'] = True
 
@@ -21,6 +21,14 @@ def add_task(request):
 
 
 def view_task_list(request):
+    if request.method == 'POST':
+        id = request.POST['task_id']
+        status = request.POST['task_status']
+        task = Task.objects.get(id=id)
+        task.status = status
+        task.save()
+        print(id, status)
+
     all_tasks = Task.objects.all()
     context = {'tasks': all_tasks, 'search_flag': False}
     return render(request, 'task_list.html', context)
