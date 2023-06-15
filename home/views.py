@@ -2,6 +2,8 @@ from django.shortcuts import render, HttpResponse
 from home.models import *
 from django.db.models import Q
 from django.shortcuts import redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
 
 
 def home_page(request):
@@ -13,7 +15,7 @@ def add_task(request):
     if request.method == 'POST':
         title = request.POST['title']
         desc = request.POST['desc']
-        task = Task(task_title=title, task_description=desc, status=False)
+        task = Task(tas/k_title=title, task_description=desc, status=False)
         task.save()
         context['success'] = True
 
@@ -63,3 +65,17 @@ def search_task(request):
 
     else:
         return view_task_list(request)
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        print("post")
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Valid") ## CHANGE TO 'REDIRECT' ##
+
+    else:
+        form = UserCreationForm
+
+    return render(request, 'register.html', {'form': form})
