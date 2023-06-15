@@ -10,4 +10,5 @@ urlpatterns = [
     path('tasks/<int:id>/edit', edit_task, name='task_edit'),
     path('search_task', search_task, name='search_task'),
     path('register', register, name='register'),
+    path('login', login_view, name='login_view'),
 ]

@@ -3,7 +3,7 @@ from home.models import *
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login
 
 
 def home_page(request):
@@ -15,7 +15,7 @@ def add_task(request):
     if request.method == 'POST':
         title = request.POST['title']
         desc = request.POST['desc']
-        task = Task(tas/k_title=title, task_description=desc, status=False)
+        task = Task(task_title=title, task_description=desc, status=False)
         task.save()
         context['success'] = True
 
@@ -68,6 +68,8 @@ def search_task(request):
 
 
 def register(request):
+    form = UserCreationForm
+    error_flag = False
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         print("post")
@@ -75,7 +77,36 @@ def register(request):
             form.save()
             return HttpResponse("Valid") ## CHANGE TO 'REDIRECT' ##
 
-    else:
-        form = UserCreationForm
+        else:
+            error_flag = True
+            error_message = form.errors.as_text()
+            error_message = error_message.split('*')[2]
+            if 'required' in error_message:
+                error_message = 'Please fill all required fields'
 
-    return render(request, 'register.html', {'form': form})
+            context = {'form': form, 'error_flag': error_flag, 'error_message': error_message}
+
+    else:
+        context = {'form': form, 'error_flag': error_flag}
+        # form = UserCreationForm
+
+    return render(request, 'register.html', context)
+
+
+def login_view(request):
+    error_flag = False
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, username)
+            return redirect('')
+
+        else:
+            error_flag = True
+
+    return render(request, 'login', {'error_flag': error_flag})
+
+
