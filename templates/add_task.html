@@ -14,6 +14,7 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        {% if authenticated %}
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -24,6 +25,17 @@
                 </li>
             </ul>
         </div>
+        <div class="ml-auto">
+            {{username}}
+            <a href="/logout" class="btn btn-primary">Logout</a>
+        </div>
+        {% else %}
+        <div class="ml-auto">
+            <a href="/login" class="btn btn-primary">Login</a>
+            <a href="/register" class="btn btn-primary">Sign Up</a>
+        </div>
+        {% endif %}
+
     </div>
 </nav>
 
