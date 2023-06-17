@@ -12,6 +12,7 @@
         input[type="checkbox"] {
             margin-left: 18px;
         }
+
     </style>
 
 </head>
@@ -33,6 +34,11 @@
                     <a class="nav-link" href="/task_list">Tasks</a>
                 </li>
             </ul>
+            <form class="d-flex" action="/search_task" method="post">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
         </div>
         <div class="ml-auto">
             {{username}}
@@ -55,7 +61,7 @@
     <h2 class='text-center'>Task List</h2>
     {% endif %}
     <table class="table">
-    <thead>
+        <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Task Title</th>
@@ -64,8 +70,8 @@
             <th scope="col">Status</th>
             <th scope="col">Actions</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         {% for task in tasks %}
         <tr>
             <th scope="row">{{ forloop.counter }}</th>
@@ -91,10 +97,10 @@
             </td>
         </tr>
         {% endfor %}
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
-<script>
+    <script>
     function updateTaskStatus(checkbox) {
         var taskID = checkbox.id.split('_')[1];
         var taskStatus = checkbox.checked ? 1 : 0;
@@ -105,7 +111,8 @@
         taskStatusInput.value = taskStatus;
         form.submit();
     }
-</script>
+
+    </script>
 
 </div>
 

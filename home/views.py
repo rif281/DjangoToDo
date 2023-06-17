@@ -17,7 +17,7 @@ def add_task(request):
     if request.method == 'POST':
         title = request.POST['title']
         desc = request.POST['desc']
-        task = Task(task_title=title, task_description=desc, status=False)
+        task = Task(task_title=title, task_description=desc, status=False, username=request.user)
         task.save()
         context['success'] = True
 
@@ -29,26 +29,27 @@ def view_task_list(request):
     if request.method == 'POST':
         id = request.POST['task_id']
         status = request.POST['task_status']
-        task = Task.objects.get(id=id)
+        task = Task.objects.get(Q(id=id) & Q(username=request.user))
         task.status = status
         task.save()
         print(id, status)
 
-    all_tasks = Task.objects.all()
-    context = {'tasks': all_tasks, 'search_flag': False, 'authenticated': request.user.is_authenticated, 'username': request.user}
+    all_tasks = Task.objects.filter(username=request.user)
+    context = {'tasks': all_tasks, 'search_flag': False, 'authenticated': request.user.is_authenticated,
+               'username': request.user}
     return render(request, 'task_list.html', context)
 
 
 @login_required
 def delete_task(request, id):
-    task = Task.objects.filter(id=id)
+    task = Task.objects.filter(Q(id=id) & Q(username=request.user))
     task.delete()
     return view_task_list(request)
 
 
 @login_required
 def edit_task(request, id):
-    task = Task.objects.get(id=id)
+    task = Task.objects.get(Q(id=id) & Q(username=request.user))
     context = {'task_title': task.task_title, 'task_desc': task.task_description, 'id': id, 'success': False,
                'authenticated': request.user.is_authenticated, 'username': request.user}
 
@@ -65,7 +66,8 @@ def edit_task(request, id):
 def search_task(request):
     if request.method == 'POST':
         task_name = request.POST['search']
-        results = Task.objects.filter(Q(task_title__contains=task_name) | Q(task_description__contains=task_name))
+        results = Task.objects.filter((Q(task_title__contains=task_name) | Q(task_description__contains=task_name)) &
+                                      Q(username=request.user))
         context = {'tasks': results, 'search_flag': True, 'authenticated': request.user.is_authenticated,
                    'username': request.user}
         return render(request, 'task_list.html', context)
