@@ -1,8 +1,12 @@
 This project allows users to manage a to-do list.
+
 The user first needs to create an account and log in, 
 after that, he can create his own task list.
+
 To create a new task, the user needs to enter a title and description (creation time automatically added to each task).
+
 Each user can view his task list and mark each task as completed/not completed.
+
 Additionally, it is possible to search/edit/delete tasks.
 
 Home Page:
