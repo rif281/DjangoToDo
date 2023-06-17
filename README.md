@@ -1,12 +1,16 @@
 ## Project Description
 
-This project allows users to manage a to-do list. Users can perform the following actions:
+This project allows users to manage a to-do list. 
+Users can perform the following actions:
 
 1. Create an account and log in.
 2. Create their own task list.
 3. Create new tasks by providing a title and description (creation time is automatically added to each task).
 4. View their task list and mark tasks as completed/not completed.
 5. Search, edit, and delete tasks.
+
+
+## Screenshot
 
 Home Page:
 ![image](https://github.com/rif281/DjangoToDo/assets/102466625/ae3f92cb-54be-4438-a830-10e743cf4ab2)
